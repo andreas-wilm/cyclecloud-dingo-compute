@@ -27,6 +27,7 @@ Autoscale = $Autoscale
         lustre.client.cluster_name = $LustreClusterName
         lustre.client.mount_point = $LustreMountPoint
 
+        [[[cluster-init dingo-compute:default:1.0.0]]]
 
     [[node master]]
     MachineType = $MasterMachineType

@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Poor man's vway of setting up permissions for the Lustre share:
-# 
+# Poor man's way of setting up permissions for the Lustre share:
+# - Create a lustre group with gid $GID
+# - Add cycleadmin to that group
+# - Make mountpoint group writable
+# - It would have been even easier to chmod 777 $MOUNTPOINT 
 
 set -ex
 
