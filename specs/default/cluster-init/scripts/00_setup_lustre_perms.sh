@@ -1,29 +1,25 @@
 #!/bin/bash
 
 # Poor man's way of setting up permissions for the Lustre share:
-# - Create a lustre group with gid $GID
-# - Add cycleadmin to that group
-# - Make mountpoint group writable
-# - It would have been even easier to chmod 777 $MOUNTPOINT 
+# - chown to cycleadmin (needs to use lfs setstrip for this project)
+# - also make group writable for new group with gid $GID
 
 set -ex
 
 MOUNTPOINT=/lustre
 GID=10000
+GROUP=lustre
+ADMIN=cycleadmin
 
+# create group if needed
 if ! grep -qw $GID /etc/group; then
-  groupadd -g $GID lustre
-  usermod -a -G lustre cycleadmin
+  groupadd -g $GID $GROUP
+  usermod -a -G $GROUP $ADMIN
 fi
 
+# set permissions (if FS is mounted)
 if mount | grep -q $MOUNTPOINT; then
-    gid=$(stat -c "%g" $MOUNTPOINT)
-    if [ $gid != $GID ]; then
-        usermod -a -G lustre cycleadmin
-        groupadd -g $GID lustre
-    fi
-
-    rights=$(stat -c "%a" $MOUNTPOINT)
+    chown $ADMIN:$GROUP $MOUNTPOINT
     if [ $rights != 775 ]; then
         chmod 775 $MOUNTPOINT
     fi
