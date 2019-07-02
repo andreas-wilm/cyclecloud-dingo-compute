@@ -44,6 +44,11 @@ Autoscale = $Autoscale
         PublicPort = 8652
 
     [[nodearray execute]]
+    # https://docs.microsoft.com/en-us/azure/cyclecloud/hb-hc-best-practices#running-mpi-jobs-with-slurm
+    Azure.SingleScaleset = true
+    Azure.MaxScalesetSize = 300
+    Azure.Overprovision = true
+
     MachineType = $ExecuteMachineType
     MaxCoreCount = $MaxExecuteCoreCount
     Interruptible = $UseLowPrio
@@ -95,7 +100,7 @@ Order = 20
         Label = Execute VM Type
         Description = The VM type for execute nodes
         ParameterType = Cloud.MachineType
-        DefaultValue = Standard_F2s_v2
+        DefaultValue = Standard_H16mr 
         Config.Multiselect = true
 
     [[parameters Software]]
